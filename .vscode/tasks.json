@@ -1,0 +1,82 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++ сборка активного файла",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.lin" //(.lin не обязательная часть названия, я её добавил только ради удобства)
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "Задача создана отладчиком."
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: mingw++ сборка активного файла",
+            "command": "/usr/bin/x86_64-w64-mingw32-g++",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.exe",
+                "-static"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "Задача создана отладчиком.(копия)"
+        },
+        {
+
+            "label": "Run windows",
+            "type": "shell",
+            "command": "konsole -e wine ${fileBasenameNoExtension}.exe", 
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "C/C++: mingw++ сборка активного файла"
+            ],
+            "problemMatcher": [
+                "$go"
+            ]
+        },
+        {
+            "label": "Run linux",
+            "type": "shell",
+            "command": "konsole -e ./${fileBasenameNoExtension}.lin", //(.lin не обязательная часть названия, я её добавил только ради удобства)
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "C/C++: g++ сборка активного файла"
+            ],
+            "problemMatcher": [
+                "$go"
+            ]
+        },
+        {
+            "label": "Run linux+windows",
+            "type": "shell",
+            "dependsOn": [
+                "Run linux",
+                "Run windows"
+            ],
+            "problemMatcher": [
+                "$go"
+            ]
+        }
+    ],
+    "version": "2.0.0"
+}
